@@ -207,19 +207,24 @@ const Project = (props) => {
       >
         Remove
         </button>
-      <div>
+      <div className="column-fields">
         <label>
           Add Column to Project {name}
         </label>
         <input type="text" ref={inputRef} onKeyPress={handleKeyPress} />
 
-        { columns.filter(({projectId}) => projectId === id).map((props) => 
-          <Column 
-            {...props}
-            cards={cards}
-            dispatch={dispatch}
-          />
-        )}
+        <div className="columns">
+            { columns.filter(({projectId}) => projectId === id).map(({id, name}) => 
+            <Column 
+              id={id}
+              key={`column-${id}`}
+              name={name}
+              cards={cards}
+              dispatch={dispatch}
+              className="column"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -255,14 +260,16 @@ const Grid = (props) => {
       <h1>Create Project</h1>
       <input type="text" ref={inputRef} onKeyPress={handleKeyPress} />
       <div className="project-list">
-        { projects.map((props) =>
+        { projects.map(({id, name}) =>
           <motion.div 
             animate="visible"
             initial="hidden"
             variants={variants}
           >
-            <Project 
-              {...props} 
+            <Project
+              key={`project-${id}`}
+              id={id}
+              name={name}
               dispatch={dispatch}
               columns={columns}
               cards={cards}

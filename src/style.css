@@ -11,6 +11,9 @@ body {
 
 .project {
   border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px;
+  position: relative;
 }
 
 input[type="text"] {
@@ -21,16 +24,36 @@ input[type="text"] {
 }
 
 .project-remove {
- background: rgb(63,94,251);
-background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(213,131,255,1) 100%); 
-color: white;
-font-weight: bold;
-padding: 4px 20px;
-margin-left: 20px;
+  font-weight: bold;
+  padding: 4px 20px;
+  margin-left: 20px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 0.8rem;
 }
 
 .project-name {
   color: white;
   font-size: 18px;
   font-weight: bold;
+}
+
+.column-fields {
+  padding: 20px;
+
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 100%;
+  grid-auto-flow: column;
+  overflow-x: auto;
+}
+
+.column {
+  padding: 10px;
+  margin: 10px;
+
 }
