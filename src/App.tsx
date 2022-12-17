@@ -27,7 +27,9 @@ interface ProjectAction {
   type: string;
 }
 
-const gridReducer = (state: GridState, action: ProjectAction | CardAction) => {
+type GridAction = ProjectAction | CardAction;
+
+const gridReducer = (state: GridState, action: GridAction) => {
   console.log(state);
 
   switch (action.type) {
