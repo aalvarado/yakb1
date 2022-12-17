@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.1.1",
+    "@craco/craco": "^7",
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "autoprefixer": "^9",
     "framer-motion": "^2.6.5",
     "nanoid": "^3.1.12",
-    "postcss": "^7",
+    "postcss": "^8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^4.0.0",
+    "react-scripts": "^5.0.1",
     "typescript": "^3.2.1 || ^4"
   },
   "scripts": {
@@ -21,6 +21,23 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-scripts": "latest"
+    "@craco/types": "^7.0.0",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^7.8.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
