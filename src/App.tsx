@@ -16,18 +16,18 @@ interface Project {
   name: string;
 }
 
-interface State {
+interface GridState {
   columns: Array<Column>;
   cards: Array<Card>;
   projects: Array<Project>;
 }
 
-interface Action {
+interface ProjectAction {
   name: string | undefined;
   type: string;
 }
 
-const gridReducer = (state: State, action: Action) => {
+const gridReducer = (state: GridState, action: ProjectAction | CardAction) => {
   console.log(state);
 
   switch (action.type) {
@@ -35,7 +35,7 @@ const gridReducer = (state: State, action: Action) => {
     case "REMOVE_CARD":
       return {
         ...state,
-        cards: cardReducer(state.cards, action),
+        cards: cardReducer(state.cards, action as CardAction),
       };
     case "ADD_COLUMN":
     case "REMOVE_COLUMN":
@@ -59,7 +59,22 @@ const gridReducer = (state: State, action: Action) => {
   }
 };
 
-const cardReducer = (state: any, action: any) => {
+interface Card {
+  id: string;
+  name: string;
+  description: string;
+  columnId: string;
+}
+
+interface CardAction {
+  columnId: string;
+  description: string;
+  id: string;
+  name: string;
+  type: string;
+}
+
+const cardReducer = (state: Array<Card>, action: CardAction) => {
   switch (action.type) {
     case "ADD_CARD":
       return state.concat({
