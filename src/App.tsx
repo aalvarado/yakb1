@@ -3,7 +3,26 @@ import { motion } from "framer-motion";
 import { nanoid } from "nanoid";
 import "./style.css";
 
-const gridReducer = (state: any, action: any) => {
+interface Column {
+  name: string;
+}
+
+interface Card {
+  name: string;
+}
+
+interface Project {
+  id: string;
+  name: string;
+}
+
+interface State {
+  columns: Array<Column>;
+  cards: Array<Card>;
+  projects: Array<Project>;
+}
+
+const gridReducer = (state: State, action: any) => {
   console.log(state);
 
   switch (action.type) {
