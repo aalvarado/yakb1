@@ -22,7 +22,12 @@ interface State {
   projects: Array<Project>;
 }
 
-const gridReducer = (state: State, action: any) => {
+interface Action {
+  name: string | undefined;
+  type: string;
+}
+
+const gridReducer = (state: State, action: Action) => {
   console.log(state);
 
   switch (action.type) {
