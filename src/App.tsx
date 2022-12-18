@@ -1,33 +1,46 @@
-import React, { useReducer, useRef, useState } from "react";
+import React, { useReducer, useRef, useState, KeyboardEvent } from "react";
 import { motion } from "framer-motion";
 import { nanoid } from "nanoid";
 import "./style.css";
 
-interface Column {
-  name: string;
-}
-
-interface Card {
-  name: string;
-}
-
-interface Project {
+interface IColumn {
   id: string;
   name: string;
+  projectId: string;
+}
+
+interface ICard {
+  id: string;
+  name: string;
+  description: string;
+  columnId: string;
+}
+
+interface IProject {
+  id: string;
+  name: string | undefined;
 }
 
 interface GridState {
-  columns: Array<Column>;
-  cards: Array<Card>;
-  projects: Array<Project>;
+  columns: Array<IColumn>;
+  cards: Array<ICard>;
+  projects: Array<IProject>;
 }
 
 interface ProjectAction {
+  id: string;
   name: string | undefined;
   type: string;
 }
 
-type GridAction = ProjectAction | CardAction;
+interface ColumnAction {
+  id: string;
+  name: string;
+  projectId: string;
+  type: string;
+}
+
+type GridAction = ProjectAction | ColumnAction | CardAction;
 
 const gridReducer = (state: GridState, action: GridAction) => {
   console.log(state);
@@ -43,30 +56,23 @@ const gridReducer = (state: GridState, action: GridAction) => {
     case "REMOVE_COLUMN":
       return {
         ...state,
-        columns: columnReducer(state.columns, action),
+        columns: columnReducer(state.columns, action as ColumnAction),
       };
     case "REMOVE_PROJECT":
       return {
         ...state,
-        projects: projectReducer(state.projects, action),
-        columns: columnReducer(state.columns, action),
+        projects: projectReducer(state.projects, action as ProjectAction),
+        columns: columnReducer(state.columns, action as ColumnAction),
       };
     case "ADD_PROJECT":
       return {
         ...state,
-        projects: projectReducer(state.projects, action),
+        projects: projectReducer(state.projects, action as ProjectAction),
       };
     default:
       return state;
   }
 };
-
-interface Card {
-  id: string;
-  name: string;
-  description: string;
-  columnId: string;
-}
 
 interface CardAction {
   columnId: string;
@@ -76,7 +82,7 @@ interface CardAction {
   type: string;
 }
 
-const cardReducer = (state: Array<Card>, action: CardAction) => {
+const cardReducer = (state: Array<ICard>, action: CardAction) => {
   switch (action.type) {
     case "ADD_CARD":
       return state.concat({
@@ -87,19 +93,17 @@ const cardReducer = (state: Array<Card>, action: CardAction) => {
       });
 
     case "REMOVE_CARD":
-      return state.filter(({ id }: { id: any }) => id !== action.id);
+      return state.filter(({ id }) => id !== action.id);
 
     default:
       return state;
   }
 };
 
-const columnReducer = (state: any, action: any) => {
+const columnReducer = (state: Array<IColumn>, action: ColumnAction) => {
   switch (action.type) {
     case "REMOVE_PROJECT":
-      return state.filter(
-        ({ projectId }: { projectId: any }) => projectId === action.projectId
-      );
+      return state.filter(({ projectId }) => projectId === action.projectId);
 
     case "ADD_COLUMN":
       return state.concat({
@@ -109,14 +113,14 @@ const columnReducer = (state: any, action: any) => {
       });
 
     case "REMOVE_COLUMN":
-      return state.filter(({ id }: { id: any }) => id !== action.id);
+      return state.filter(({ id }) => id !== action.id);
 
     default:
       return state;
   }
 };
 
-const projectReducer = (state: Array<any> = [], action: any) => {
+const projectReducer = (state: Array<IProject> = [], action: ProjectAction) => {
   switch (action.type) {
     case "ADD_PROJECT":
       return state.concat({ id: nanoid(), name: action.name });
@@ -143,7 +147,15 @@ const initialState = {
   ui: {},
 };
 
-const Column = (props: any) => {
+interface ColumnProps {
+  id: string;
+  name: string;
+  dispatch: any;
+  cards: Array<ICard>;
+  className: string;
+}
+
+const Column = (props: ColumnProps) => {
   const { id, name, dispatch, cards } = props;
 
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -245,12 +257,12 @@ const Grid = (props: any) => {
 
   const { columns, cards, projects } = state;
 
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       dispatch({
         type: "ADD_PROJECT",
         name: inputRef?.current?.value,
-      });
+      } as ProjectAction);
       if (inputRef.current) inputRef.current.value = "";
     }
   };
@@ -265,7 +277,7 @@ const Grid = (props: any) => {
       <h1>Create Project</h1>
       <input type="text" ref={inputRef} onKeyPress={handleKeyPress} />
       <div className="project-list">
-        {projects.map(({ id, name }: { id: any; name: any }) => (
+        {projects.map(({ id, name }) => (
           <motion.div animate="visible" initial="hidden" variants={variants}>
             <Project
               key={`project-${id}`}
@@ -285,4 +297,3 @@ const Grid = (props: any) => {
 const App = () => <Grid />;
 
 export default App;
-
