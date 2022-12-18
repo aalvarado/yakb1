@@ -60,7 +60,7 @@ const initialState = {
 interface ColumnProps {
   id: string;
   name: string;
-  dispatch: (arg0: GridAction) => void;
+  dispatch(action: GridAction): void;
   cards: Array<ICard>;
   className: string;
 }
@@ -68,7 +68,7 @@ interface ColumnProps {
 interface CardProps {
   id: string;
   name: string;
-  dispatch: (arg0: GridAction) => void;
+  dispatch(action: GridAction): void; // function declaration
   description: string;
 }
 
@@ -77,12 +77,10 @@ interface ProjectProps {
   name: string | undefined;
   columns: Array<IColumn>;
   cards: Array<ICard>;
-  dispatch: (arg0: GridAction) => void;
+  dispatch(action: GridAction): void;
 }
 
 const gridReducer = (state: GridState, action: GridAction) => {
-  console.log(state);
-
   switch (action.type) {
     case "ADD_CARD":
     case "REMOVE_CARD":
