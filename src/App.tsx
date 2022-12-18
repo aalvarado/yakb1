@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState, KeyboardEvent } from "react";
+import { useReducer, useRef, KeyboardEvent } from "react";
 import { motion } from "framer-motion";
 import { nanoid } from "nanoid";
 import "./style.css";
@@ -40,7 +40,45 @@ interface ColumnAction {
   type: string;
 }
 
+interface CardAction {
+  columnId: string;
+  description: string;
+  id: string;
+  name: string;
+  type: string;
+}
+
 type GridAction = ProjectAction | ColumnAction | CardAction;
+
+const initialState = {
+  columns: [],
+  cards: [],
+  projects: [],
+  ui: {},
+};
+
+interface ColumnProps {
+  id: string;
+  name: string;
+  dispatch: (arg0: GridAction) => void;
+  cards: Array<ICard>;
+  className: string;
+}
+
+interface CardProps {
+  id: string;
+  name: string;
+  dispatch: (arg0: GridAction) => void;
+  description: string;
+}
+
+interface ProjectProps {
+  id: string;
+  name: string | undefined;
+  columns: Array<IColumn>;
+  cards: Array<ICard>;
+  dispatch: (arg0: GridAction) => void;
+}
 
 const gridReducer = (state: GridState, action: GridAction) => {
   console.log(state);
@@ -73,14 +111,6 @@ const gridReducer = (state: GridState, action: GridAction) => {
       return state;
   }
 };
-
-interface CardAction {
-  columnId: string;
-  description: string;
-  id: string;
-  name: string;
-  type: string;
-}
 
 const cardReducer = (state: Array<ICard>, action: CardAction) => {
   switch (action.type) {
@@ -140,35 +170,20 @@ const projectReducer = (state: Array<IProject> = [], action: ProjectAction) => {
   }
 };
 
-const initialState = {
-  columns: [],
-  cards: [],
-  projects: [],
-  ui: {},
-};
-
-interface ColumnProps {
-  id: string;
-  name: string;
-  dispatch: any;
-  cards: Array<ICard>;
-  className: string;
-}
-
 const Column = (props: ColumnProps) => {
   const { id, name, dispatch, cards } = props;
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descInputRef = useRef<HTMLInputElement>(null);
 
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       dispatch({
         type: "ADD_CARD",
         name: nameInputRef?.current?.value,
         description: descInputRef?.current?.value,
         columnId: id,
-      });
+      } as CardAction);
       if (nameInputRef && nameInputRef.current) nameInputRef.current.value = "";
       if (descInputRef && descInputRef.current) descInputRef.current.value = "";
     }
@@ -183,8 +198,8 @@ const Column = (props: ColumnProps) => {
       <div className="column-name">{name}</div>
       <div className="cards">
         {cards
-          .filter(({ columnId }: { columnId: any }) => columnId === id)
-          .map((props: any) => (
+          .filter(({ columnId }) => columnId === id)
+          .map((props) => (
             <Card {...props} dispatch={dispatch} />
           ))}
       </div>
@@ -192,8 +207,8 @@ const Column = (props: ColumnProps) => {
   );
 };
 
-const Card = (props: any) => {
-  const { id, name, dispatch, description } = props;
+const Card = (props: CardProps) => {
+  const { id, name, description } = props;
 
   return (
     <div key={`card-${id}`} className="card">
@@ -203,17 +218,17 @@ const Card = (props: any) => {
   );
 };
 
-const Project = (props: any) => {
+const Project = (props: ProjectProps) => {
   const { id, name, columns, cards, dispatch } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       dispatch({
         type: "ADD_COLUMN",
         name: inputRef?.current?.value,
         projectId: id,
-      });
+      } as ColumnAction);
       if (inputRef.current) inputRef.current.value = "";
     }
   };
@@ -223,7 +238,9 @@ const Project = (props: any) => {
       <div className="project-name">{name}</div>
 
       <button
-        onClick={() => dispatch({ type: "REMOVE_PROJECT", id: id })}
+        onClick={() =>
+          dispatch({ type: "REMOVE_PROJECT", id: id } as ProjectAction)
+        }
         className="project-remove"
       >
         Remove
@@ -234,8 +251,8 @@ const Project = (props: any) => {
 
         <div className="columns">
           {columns
-            .filter(({ projectId }: { projectId: any }) => projectId === id)
-            .map(({ id, name }: { id: any; name: string }) => (
+            .filter(({ projectId }) => projectId === id)
+            .map(({ id, name }) => (
               <Column
                 id={id}
                 key={`column-${id}`}
@@ -251,7 +268,7 @@ const Project = (props: any) => {
   );
 };
 
-const Grid = (props: any) => {
+const Grid = () => {
   const [state, dispatch] = useReducer(gridReducer, initialState);
   const inputRef = useRef<HTMLInputElement>(null);
 
