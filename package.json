@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^7",
-    "@tailwindcss/postcss7-compat": "^2.0.3",
-    "autoprefixer": "^9",
-    "framer-motion": "^2.6.5",
-    "nanoid": "^3.1.12",
-    "postcss": "^8",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^5.0.1",
-    "typescript": "^3.2.1 || ^4"
+    "@craco/craco": "7",
+    "@tailwindcss/postcss7-compat": "2.2.17",
+    "autoprefixer": "9",
+    "framer-motion": "10.0.1",
+    "nanoid": "4.0.1",
+    "postcss": "8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "3.2.1 || ^4"
   },
   "scripts": {
     "start": "craco start",
@@ -21,12 +21,12 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@craco/types": "^7.0.0",
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.9",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-normalize": "^10.0.1",
-    "postcss-preset-env": "^7.8.3"
+    "@craco/types": "7.0.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "postcss-flexbugs-fixes": "5.0.2",
+    "postcss-normalize": "10.0.1",
+    "postcss-preset-env": "8.0.1"
   },
   "browserslist": {
     "production": [
