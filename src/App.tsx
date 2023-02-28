@@ -272,14 +272,16 @@ const Grid = () => {
 
   const { columns, cards, projects } = state
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    console.log(e)
+  const addProject = (projectName: String | undefined) => {
+    dispatch({
+      type: "ADD_PROJECT",
+      name: projectName,
+    } as ProjectAction)
+  }
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      dispatch({
-        type: "ADD_PROJECT",
-        name: inputRef?.current?.value,
-      } as ProjectAction)
+      addProject(inputRef?.current?.value)
       if (inputRef.current) inputRef.current.value = ""
     }
   }
@@ -298,7 +300,7 @@ const Grid = () => {
         ref={inputRef}
         onKeyDown={handleKeyPress}
       />
-      <button>+</button>
+      <button onClick={() => addProject(inputRef?.current?.value)}>+</button>
       <div className="project-list">
         {projects.map(({ id, name }) => (
           <motion.div animate="visible" initial="hidden" variants={variants}>
