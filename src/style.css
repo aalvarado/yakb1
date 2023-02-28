@@ -1,12 +1,39 @@
-h1, p {
-  
-}
 body {
   font-family: Arial;
   color: #fff;
-  background: rgb(78,137,174);
-  background: linear-gradient(308deg, rgba(78,137,174,1) 0%, rgba(67,101,139,1) 100%);
-  
+  background-color: #333;
+}
+
+#root {
+  margin: 2rem;
+  padding: 2rem;
+  border: 1px solid #555;
+  border-radius: 8px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin-top: 0;
+}
+
+input {
+  all: unset;
+  border-radius: 4px;
+  border: 1px solid #444;
+  padding: .5rem;
+}
+
+button {
+  all: unset;
+  border-radius: 4px;
+  border: 1px solid #555;
+  padding: 0.5rem;
+  background-color: #444;
+}
+
+button:hover {
+  background-color: #555;
+  border-color: #666;
+  cursor: pointer;
 }
 
 .project {
@@ -17,12 +44,9 @@ body {
 }
 
 input[type="text"] {
-  padding: 8px;
   background-color: #222;
   color: #ddd;
-
 }
-
 .project-remove {
   font-weight: bold;
   padding: 4px 20px;
@@ -41,7 +65,6 @@ input[type="text"] {
 
 .column-fields {
   padding: 20px;
-
 }
 
 .columns {
@@ -55,5 +78,4 @@ input[type="text"] {
 .column {
   padding: 10px;
   margin: 10px;
-
 }
